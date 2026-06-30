@@ -292,7 +292,7 @@
                     <form action="https://api.staticforms.dev/submit" method="POST" class="form">
                         <input type="hidden" name="apiKey" value="sf_b28b453bf885be88f89f8e34">
                         <input type="hidden" name="subject" value="Novo lead - Morte no Salão de Beleza">
-                        <input type="hidden" name="redirectTo" value="https://polimatastudio.github.io/morte-no-salao/">
+                        <input type="hidden" name="redirectTo" value="https://seudominio.com/obrigado.html">
                         
                         <div class="form__group">
                             <label for="nome">Nome completo</label>
@@ -342,5 +342,33 @@
     <script src="js/interactions.js" defer></script>
     <script src="js/navigation.js" defer></script>
     <script src="js/effects.js" defer></script>
+
+    <!-- Overlay de Sucesso -->
+<div id="successOverlay" class="success-overlay" aria-hidden="true">
+    <div class="success-modal">
+        <div class="success-icon">
+            <svg viewBox="0 0 24 24" width="64" height="64">
+                <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+        </div>
+        <h3>Capítulo enviado com sucesso!</h3>
+        <p>📖 O primeiro capítulo de <strong>"Morte no Salão de Beleza"</strong> está a caminho do seu e-mail. Verifique sua caixa de entrada e, se não encontrar, olhe a pasta de spam.</p>
+        <button id="closeSuccess" class="btn btn--primary">Continuar navegando</button>
+    </div>
+</div>
+
+<!-- Overlay de Erro -->
+<div id="errorOverlay" class="error-overlay" aria-hidden="true">
+    <div class="error-modal">
+        <div class="error-icon">
+            <svg viewBox="0 0 24 24" width="64" height="64">
+                <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+            </svg>
+        </div>
+        <h3>Ops! Algo deu errado.</h3>
+        <p>Não foi possível enviar sua solicitação. Tente novamente ou entre em contato pelo <a href="https://wa.link/idsl9l" target="_blank">WhatsApp</a>.</p>
+        <button id="closeError" class="btn btn--secondary">Tentar novamente</button>
+    </div>
+</div>
 </body>
 </html>
