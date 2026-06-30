@@ -6,24 +6,23 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Morte no Salão de Beleza - Site carregado');
 
     // ===== MENU MOBILE =====
-const menuToggle = document.querySelector('.header__menu-toggle');
-const nav = document.querySelector('.header__nav');
+    const menuToggle = document.querySelector('.header__menu-toggle');
+    const nav = document.querySelector('.header__nav');
 
-if (menuToggle && nav) {
-    menuToggle.addEventListener('click', function() {
-        const expanded = this.getAttribute('aria-expanded') === 'true' || false;
-        this.setAttribute('aria-expanded', !expanded);
-        nav.classList.toggle('active');
-    });
-
-    // Fecha o menu ao clicar em um link (opcional)
-    nav.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', function() {
-            menuToggle.setAttribute('aria-expanded', 'false');
-            nav.classList.remove('active');
+    if (menuToggle && nav) {
+        menuToggle.addEventListener('click', function() {
+            const expanded = this.getAttribute('aria-expanded') === 'true' || false;
+            this.setAttribute('aria-expanded', !expanded);
+            nav.classList.toggle('active');
         });
-    });
-}
+
+        nav.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function() {
+                menuToggle.setAttribute('aria-expanded', 'false');
+                nav.classList.remove('active');
+            });
+        });
+    }
 
     // ===== SCROLL PROGRESS BAR =====
     const progressBar = document.createElement('div');
@@ -37,7 +36,7 @@ if (menuToggle && nav) {
         progressBar.style.width = progress + '%';
     });
 
-    // ===== SCROLL REVEAL (animações de entrada) =====
+    // ===== SCROLL REVEAL =====
     const revealElements = document.querySelectorAll('.reveal');
 
     if ('IntersectionObserver' in window) {
@@ -54,7 +53,6 @@ if (menuToggle && nav) {
 
         revealElements.forEach(el => revealObserver.observe(el));
     } else {
-        // Fallback: exibe todos os elementos
         revealElements.forEach(el => el.classList.add('reveal--visible'));
     }
 
@@ -80,7 +78,7 @@ if (menuToggle && nav) {
 
     function animateCounter(el, target) {
         let current = 0;
-        const increment = Math.ceil(target / 60); // 60 frames ~ 1s
+        const increment = Math.ceil(target / 60);
         const timer = setInterval(() => {
             current += increment;
             if (current >= target) {
@@ -92,7 +90,7 @@ if (menuToggle && nav) {
         }, 16);
     }
 
-    // ===== BOTÃO MAGNÉTICO (efeito de mouse) =====
+    // ===== BOTÃO MAGNÉTICO =====
     const magneticBtns = document.querySelectorAll('.btn--magnetic');
 
     magneticBtns.forEach(btn => {
@@ -109,32 +107,125 @@ if (menuToggle && nav) {
         });
     });
 
-    // ===== VALIDAÇÃO BÁSICA DO FORMULÁRIO (opcional) =====
+    // ===== FORMULÁRIO COM FETCH (SUCESSO E ERRO) =====
     const form = document.querySelector('.form');
+    const successOverlay = document.getElementById('successOverlay');
+    const errorOverlay = document.getElementById('errorOverlay');
+    const closeSuccess = document.getElementById('closeSuccess');
+    const closeError = document.getElementById('closeError');
+
     if (form) {
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Validação básica
             const nome = document.getElementById('nome');
             const email = document.getElementById('email');
+            const mensagem = document.getElementById('mensagem');
 
-            if (nome && email) {
-                if (nome.value.trim() === '' || email.value.trim() === '') {
-                    e.preventDefault();
-                    alert('Por favor, preencha todos os campos obrigatórios.');
-                    return false;
-                }
-
-                // Validação simples de email
-                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailPattern.test(email.value.trim())) {
-                    e.preventDefault();
-                    alert('Por favor, insira um e-mail válido.');
-                    return false;
-                }
+            if (!nome || !email) {
+                alert('Por favor, preencha todos os campos obrigatórios.');
+                return;
             }
-            // Se tudo ok, o formulário será enviado normalmente via Static Forms
-            return true;
+
+            if (nome.value.trim() === '' || email.value.trim() === '') {
+                alert('Por favor, preencha todos os campos obrigatórios.');
+                return;
+            }
+
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email.value.trim())) {
+                alert('Por favor, insira um e-mail válido.');
+                return;
+            }
+
+            // Prepara os dados
+            const formData = new FormData(form);
+            const url = form.getAttribute('action');
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success !== false) {
+                    // Sucesso!
+                    form.reset();
+                    showOverlay('success');
+                } else {
+                    // Erro retornado pela API
+                    showOverlay('error');
+                }
+            } catch (error) {
+                console.error('Erro no envio:', error);
+                showOverlay('error');
+            }
         });
     }
+
+    // Função para exibir overlay
+    function showOverlay(type) {
+        const overlay = type === 'success' ? successOverlay : errorOverlay;
+        if (overlay) {
+            overlay.classList.add('active');
+            overlay.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+
+            // Scroll suave para o topo
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+
+            // Fecha automaticamente após 8 segundos (sucesso) ou mantém (erro)
+            if (type === 'success') {
+                setTimeout(() => {
+                    hideOverlay('success');
+                }, 8000);
+            }
+        }
+    }
+
+    // Função para ocultar overlay
+    function hideOverlay(type) {
+        const overlay = type === 'success' ? successOverlay : errorOverlay;
+        if (overlay) {
+            overlay.classList.remove('active');
+            overlay.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+    }
+
+    // Fechar overlays com os botões
+    if (closeSuccess) {
+        closeSuccess.addEventListener('click', function() {
+            hideOverlay('success');
+        });
+    }
+
+    if (closeError) {
+        closeError.addEventListener('click', function() {
+            hideOverlay('error');
+        });
+    }
+
+    // Fechar overlays clicando fora do modal (apenas no fundo)
+    [successOverlay, errorOverlay].forEach(overlay => {
+        if (overlay) {
+            overlay.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    const type = this.id === 'successOverlay' ? 'success' : 'error';
+                    hideOverlay(type);
+                }
+            });
+        }
+    });
 
     // ===== HEADER SCROLL =====
     const header = document.querySelector('.header');
@@ -148,7 +239,7 @@ if (menuToggle && nav) {
         });
     }
 
-    // ===== RIPPLE EFFECT NOS BOTÕES =====
+    // ===== RIPPLE EFFECT =====
     const buttons = document.querySelectorAll('.btn:not(.btn--no-ripple)');
     buttons.forEach(btn => {
         btn.addEventListener('click', function(e) {
