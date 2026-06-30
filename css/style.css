@@ -116,3 +116,123 @@ body {
     height: auto;
     display: block;
 }
+
+/* ===== OVERLAYS DE SUCESSO E ERRO ===== */
+.success-overlay,
+.error-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-modal, 300);
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+    padding: var(--spacing-md);
+}
+
+.success-overlay.active,
+.error-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.success-modal,
+.error-modal {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    max-width: 500px;
+    width: 100%;
+    padding: var(--spacing-xl);
+    text-align: center;
+    box-shadow: var(--shadow-xl);
+    transform: scale(0.9) translateY(20px);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.success-overlay.active .success-modal,
+.error-overlay.active .error-modal {
+    transform: scale(1) translateY(0);
+}
+
+.success-icon,
+.error-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: 0 auto var(--spacing-md);
+}
+
+.success-icon {
+    background: var(--color-success, #2ecc71);
+    color: var(--color-white);
+}
+
+.error-icon {
+    background: var(--color-error, #e74c3c);
+    color: var(--color-white);
+}
+
+.success-modal h3,
+.error-modal h3 {
+    font-family: var(--font-title);
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-dark);
+}
+
+.success-modal p,
+.error-modal p {
+    font-size: var(--font-size-base);
+    color: var(--color-muted);
+    margin-bottom: var(--spacing-lg);
+    line-height: var(--line-height-relaxed);
+}
+
+.success-modal p a {
+    color: var(--color-primary);
+    font-weight: 700;
+}
+
+.success-modal p a:hover {
+    color: var(--color-secondary);
+}
+
+.error-modal .btn--secondary {
+    border-color: var(--color-error);
+    color: var(--color-error);
+}
+
+.error-modal .btn--secondary:hover {
+    background: var(--color-error);
+    color: var(--color-white);
+}
+
+@media (max-width: 576px) {
+    .success-modal,
+    .error-modal {
+        padding: var(--spacing-lg);
+        margin: var(--spacing-sm);
+    }
+    .success-icon,
+    .error-icon {
+        width: 60px;
+        height: 60px;
+    }
+    .success-icon svg,
+    .error-icon svg {
+        width: 40px;
+        height: 40px;
+    }
+    .success-modal h3,
+    .error-modal h3 {
+        font-size: var(--font-size-lg);
+    }
+}
