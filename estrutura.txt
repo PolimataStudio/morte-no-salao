@@ -1,0 +1,29 @@
+projeto/
+├── index.html
+├── manifest.json
+├── service-worker.js
+├── README.md
+├── robots.txt
+├── sitemap.xml (opcional)
+├── css/
+│   ├── reset.css
+│   ├── variables.css
+│   ├── style.css
+│   ├── layout.css
+│   ├── components.css
+│   ├── animations.css
+│   ├── responsive.css
+│   └── utilities.css
+├── js/
+│   ├── script.js
+│   ├── animations.js
+│   ├── interactions.js
+│   ├── navigation.js
+│   └── effects.js
+├── data/
+│   └── content.json (opcional)
+└── assets/
+    ├── images/
+    ├── icons/
+    ├── fonts/
+    └── svg/

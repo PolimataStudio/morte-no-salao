@@ -1,0 +1,78 @@
+/* components.css - Componentes reutilizáveis */
+
+/* Cards */
+.card {
+    background: var(--color-white);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-medium);
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Badge */
+.badge {
+    display: inline-block;
+    background: var(--color-secondary);
+    color: var(--color-white);
+    padding: 0.2rem 0.8rem;
+    border-radius: var(--radius-full);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Grid de logos (clientes) */
+.logos-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-xl);
+}
+
+.logo-item {
+    opacity: 0.6;
+    transition: opacity var(--transition-fast);
+}
+
+.logo-item:hover {
+    opacity: 1;
+}
+
+/* Formulário de contato (genérico) */
+.form--inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+.form--inline .form__group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.form--inline .btn {
+    flex-shrink: 0;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+    display: flex;
+    gap: var(--spacing-sm);
+    font-size: 0.85rem;
+    color: var(--color-gray);
+}
+
+.breadcrumb a {
+    color: var(--color-primary);
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
